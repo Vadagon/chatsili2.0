@@ -1,9 +1,8 @@
 {
-  "name": "CHANGE THIS : Extension boilerplate",
+  "name": "ChatSillo 2.0",
   "version": "0.0.1",
   "manifest_version": 2,
-  "description": "This extension was created with the awesome extensionizr.com",
-  "homepage_url": "http://extensionizr.com",
+  "description": "Danielle's project",
   "icons": {
     "16": "icons/icon16.png",
     "48": "icons/icon48.png",
@@ -13,8 +12,7 @@
   "background": {
     "scripts": [
       "src/bg/background.js"
-    ],
-    "persistent": false
+    ]
   },
   "browser_action": {
     "default_icon": "icons/icon19.png",
@@ -22,22 +20,18 @@
     "default_popup": "src/browser_action/browser_action.html"
   },
   "permissions": [
-    "https://*/*"
+    "https://*.facebook.com/*"
   ],
   "content_scripts": [
     {
       "matches": [
-        "https://www.google.com/*"
+        "https://www.facebook.com/messages/*"
       ],
       "css": [
         "src/inject/inject.css"
-      ]
-    },
-    {
-      "matches": [
-        "https://www.google.com/*"
       ],
       "js": [
+        "libs/jquery.min.js",
         "src/inject/inject.js"
       ]
     }
