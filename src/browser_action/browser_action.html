@@ -5,7 +5,7 @@
 <style type="text/css">
 #mainPopup {
     min-height: 400px;
-    width: 600px;
+    width: 700px;
     /*font-family: Helvetica, Ubuntu, Arial, sans-serif;*/
 }
 
@@ -19,6 +19,15 @@
 
 .blue {
     background-color: #44a6bb !important;
+}
+.orange{
+    background-color: #f17e3a !important;
+}
+.violet{
+    background-color: #bd52f7 !important;
+}
+.yellow{
+    background-color: #ffe100 !important;
 }
 
 md-input-container {
@@ -129,10 +138,95 @@ input:checked~.tab-content {
     display: block;
     padding: 1em;
 }
+.colorPicker-custom{
+    border: 1px solid black;
+    box-sizing: border-box;
+    z-index: 2;
+    width: 27px;
+    height: 27px;
+    position: relative;
+}
+.colorPicker-custom > div{
+    position: absolute;
+    box-sizing: border-box;
+    top: 26px;
+    left: -1px;
+    width: 100%;
+}
+.colorPicker-custom > div > span{
+    border: 1px solid black;
+    box-sizing: border-box;
+    width: 27px;
+    height: 27px;
+    margin-top: -1px;
+    display: block;
+}
+.chipContactTitle md-input-container{
+    width: 171px;
+    max-width: 171px;
+    margin: 0 10px;
+    margin-top: -5px;
+    margin-bottom: -23px;
+}
+.logoPNG{
+    display: block;
+    height: 100%;
+    padding: 0 10px;
+    margin: 0 -16px;
+    margin-right: 10px;
+    background-color: #fafafa;
+}
+.logoPNG img{
+    height: 42px;
+    width: auto;
+}
+.failed{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #eaeaea;
+    z-index: 100;
+}
+.failed.wait{
+    background-color: #ffffb1;
+}
+.failed .wait{
+    display: none;
+}
+.failed.wait .wait{
+    display: flex;
+    position: absolute;
+    top: calc(50% - 25px);
+    width: 100%;
+}
+.failed.wait .openMessenger{
+    display: none;
+}
+.failed .openMessenger{
+    display: flex;
+    position: absolute;
+    top: calc(50% - 45px);
+    width: 100%;
+}
+
 </style>
 <div id="mainPopup" ng-app="myApp" ng-controller="myCtrl" ng-cloak>
+    <div class="failed {{failed}}" ng-if="failed">
+        <div layout="row" class="wait" layout-align="space-around">
+          <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+        </div>
+         <div layout="column" class="openMessenger" layout-align="center center">
+            <h2>Facebook Messenger not detected</h2>
+            <p>Please open <a href="https://www.messenger.com/" target="_blank" md-no-ink class="md-primary">messenger.com</a> to continue</p>
+        </div>
+    </div>
     <md-toolbar class="md-primary">
         <div class="md-toolbar-tools">
+            <div class="logoPNG">
+                <img src="/icons/logo.png">
+            </div>
             <h2>ChatSillo 2.0</h2>
             <span flex></span>
             <md-button class="md-icon-button" aria-label="Favorite" style="font-size: 30px;">
@@ -142,7 +236,7 @@ input:checked~.tab-content {
     </md-toolbar>
     <md-content class="md-padding" layout="column">
         <!-- <md-button class="md-raised">Button</md-button> -->
-        <md-chips ng-model="data.user.tags" name="tagName" placeholder="Enter a tag..." md-transform-chip="transformColorTag($chip)" input-aria-label="Tags" ng-click="tagSelected($event)" md-enable-chip-edit="true">
+        <md-chips ng-model="tags" name="tagName" placeholder="Enter a tag..." md-transform-chip="transformColorTag($chip)" input-aria-label="Tags" ng-click="tagSelected($event)" md-enable-chip-edit="true">
             <md-chip-template class="{{$chip.color}}" custom-chip>
                 <strong>{{$chip.name}}</strong>
                 <!-- <em>(fruit)</em> -->
@@ -150,17 +244,28 @@ input:checked~.tab-content {
         </md-chips>
         <div layout="row">
             <div flex="">
-                <h2 class="md-title" style="">Contacts of <u contenteditable="true" ng-model="data.user.tags[data.selectedTag].name">{{data.user.tags[data.selectedTag].name}}</u></h2>
-                <md-list class="" flex style="padding-top: 0;">
-                    <md-subheader class="md-no-sticky contactsSubheader" ng-click="selectAllUsers()">Select all </md-subheader>
-                    <md-list-item ng-repeat="person in people" class="noright">
-                        <img alt="{{ person.name }}" ng-src="{{ '/icons/icon128.png' }}" class="md-avatar" />
-                        <div class="md-list-item-text" class="md-offset">
-                            <h3> {{ person.name }} </h3>
-                            <!-- <p>  text hint </p> -->
-                            <!-- md-2-line -->
+                <h2 class="md-title chipContactTitle" style="" layout="row">
+                    <span flex="initial">Contacts of </span>
+                    <md-input-container md-no-float flex="noshrink">
+                        <!-- <label>Title</label> -->
+                        <input ng-model="tags[data.selectedTag].name">
+                      </md-input-container>
+                 <!--    <u contenteditable="true" ng-model="tags[data.selectedTag].name" flex="noshrink">{{tags[data.selectedTag].name}}</u>
+ -->
+                      <div class="colorPicker-custom {{tags[data.selectedTag].color}}" flex="initial" ng-click="openColorPicker=!openColorPicker">
+                        <div ng-if="openColorPicker">
+                            <span ng-repeat="i in colors" class="{{i}}" ng-click="tags[data.selectedTag].color = i"></span>
                         </div>
-                        <md-checkbox class="md-secondary" ng-model="person.selected"></md-checkbox>
+                      </div>
+                </h2>
+                <md-list class="" flex style="padding-top: 0;">
+                    <md-subheader class="md-no-sticky contactsSubheader" ng-click="selectAllUsers()">Select all</md-subheader>
+                    <md-list-item ng-repeat="(key, person) in data.user.users" class="noright" ng-if="tags[data.selectedTag].id == person">
+                        <img alt="{{ data.user.data.users[key].name }}" src="{{ data.user.data.users[key].image }}" class="md-avatar" />
+                        <div class="md-list-item-text" class="md-offset">
+                            <h3> {{ data.user.data.users[key].name }} </h3>
+                        </div>
+                        <md-checkbox class="md-secondary" ng-model="data.user.data.users[key].selected"></md-checkbox>
                     </md-list-item>
                 </md-list>
             </div>
@@ -169,21 +274,21 @@ input:checked~.tab-content {
                     <md-tab label="Messages">
                         <md-content class="md-padding">
                             <br>
-                            <md-input-container class="md-icon-float md-block">
+                            <md-input-container class="md-icon-float md-block" ng-init="newMessage = ''">
                                 <!-- Use floating label instead of placeholder -->
-                                <md-icon ng-click="sendMessage()" class="name">
+                                <md-icon ng-click="tags[data.selectedTag].messages.push(newMessage); newMessage = ''; update()" class="name">
                                     <i class="material-icons">
                                         add
                                     </i>
                                 </md-icon>
                                 <label>Write new message sample</label>
-                                <input ng-model="user.name" type="text">
+                                <input ng-model="newMessage" type="text">
                             </md-input-container>
-                            <md-input-container class="md-icon-float md-block" ng-repeat="message in [1,2,5]">
+                            <md-input-container class="md-icon-float md-block" ng-repeat="message in tags[data.selectedTag].messages track by $index">
                                 <!-- Use floating label instead of placeholder -->
-                                <md-icon ng-click="sendMessage()" class="name"><i class="material-icons"> send </i></md-icon>
-                                <input type="text" value="Sample message to send">
-                                <md-icon ng-click="sendMessage()" class="name">
+                                <md-icon ng-click="sendMessage(tags[data.selectedTag].messages[$index])" class="name"><i class="material-icons"> send </i></md-icon>
+                                <input type="text" ng-model="tags[data.selectedTag].messages[$index]">
+                                <md-icon ng-click="tags[data.selectedTag].messages.splice($index, 1)" class="name">
                                     <i class="material-icons">
                                         delete
                                     </i>
@@ -194,42 +299,42 @@ input:checked~.tab-content {
                     <md-tab label="Templates">
                         <md-content class="md-padding">
                             <br>
-                            <md-input-container class="md-icon-float md-block">
+                            <md-input-container class="md-icon-float md-block" ng-init="newTemplateName = ''; newTemplateMessage = ''">
                                 <!-- Use floating label instead of placeholder -->
-                                <md-icon ng-click="sendMessage()" class="name">
+                                <md-icon ng-click="data.user.data.templates.push({name: newTemplateName, messages: []}); newTemplateName = ''; update();" class="name">
                                     <i class="material-icons">
                                         add
                                     </i>
                                 </md-icon>
-                                <label>Create a template</label>
-                                <input value="test mesaage" type="text">
+                                <label>Create a template {{newTemplateName}}</label>
+                                <input value="test mesaage" ng-model="newTemplateName" type="text">
                             </md-input-container>
                             <div class="tabs">
-                                <div class="tab" ng-repeat="s in [1,2,3]">
+                                <div class="tab" ng-repeat="(key, template) in data.user.data.templates track by $index">
                                     <input type="checkbox" class="acccCheckbox" id="chck{{$index}}">
-                                    <label class="tab-label" for="chck{{$index}}">Template {{$index+1}}</label>
+                                    <label class="tab-label" for="chck{{$index}}">{{template.name}}</label>
                                     <div class="tab-content">
                                         <md-input-container class="md-icon-float md-block" style="z-index: 1;">
                                             <!-- Use floating label instead of placeholder -->
-                                            <md-icon ng-click="sendMessage()" class="name">
+                                            <md-icon ng-click="template.messages.push(newTemplateMessage); newTemplateMessage = ''; update();" class="name">
                                                 <i class="material-icons">
                                                     add
                                                 </i>
                                             </md-icon>
                                             <label>Write new message sample</label>
-                                            <input type="text">
+                                            <input type="text" ng-model="newTemplateMessage">
                                         </md-input-container>
-                                        <md-input-container class="md-icon-float md-block" ng-repeat="message in [1,2,5]">
+                                        <md-input-container class="md-icon-float md-block" ng-repeat="message in template.messages track by $index">
                                             <!-- Use floating label instead of placeholder -->
-                                            <md-icon ng-click="sendMessage()" class="name"><i class="material-icons"> send </i></md-icon>
-                                            <input type="text" value="Sample message to send">
-                                            <md-icon ng-click="sendMessage()" class="name">
+                                            <md-icon ng-click="sendMessage(template.messages[$index])" class="name"><i class="material-icons"> send </i></md-icon>
+                                            <input type="text" ng-model="template.messages[$index]">
+                                            <md-icon ng-click="template.messages.splice($index, 1);" class="name">
                                                 <i class="material-icons">
                                                     delete
                                                 </i>
                                             </md-icon>
                                         </md-input-container>
-                                        <md-button class="md-warn">Delete Template</md-button>
+                                        <md-button class="md-warn" ng-click="data.user.data.templates.splice(key, 1)">Delete Template</md-button>
                                     </div>
                                 </div>
                             </div>
@@ -240,6 +345,8 @@ input:checked~.tab-content {
         </div>
     </md-content>
 </div>
+
+<script src="/libs/jquery.min.js"></script>
 <!-- Angular Material requires Angular.js Libraries -->
 <script src="/libs/angular.min.js"></script>
 <script src="/libs/angular-animate.min.js"></script>

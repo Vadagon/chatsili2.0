@@ -11,6 +11,7 @@
   "default_locale": "en",
   "background": {
     "scripts": [
+      "libs/utils.js",
       "src/bg/background.js"
     ]
   },
@@ -20,18 +21,20 @@
     "default_popup": "src/browser_action/browser_action.html"
   },
   "permissions": [
-    "https://*.facebook.com/*"
+    "https://*.facebook.com/*", "storage"
   ],
   "content_scripts": [
     {
       "matches": [
-        "https://www.facebook.com/messages/*"
+        "https://www.facebook.com/messages/*",
+        "https://www.messenger.com/*"
       ],
       "css": [
         "src/inject/inject.css"
       ],
       "js": [
         "libs/jquery.min.js",
+        "src/inject/utils.js",
         "src/inject/inject.js"
       ]
     }

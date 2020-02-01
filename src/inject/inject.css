@@ -40,7 +40,7 @@
 }
 
 /* Links inside the dropdown */
-#CRM-123123123123123 .dropdown-content a {
+#CRM-123123123123123 .dropdown-content label {
     border-radius: 5px;
 	padding: 0px 5px;
     font-size: 15px;
@@ -52,7 +52,7 @@
 }
 
 /* Change color of dropdown links on hover */
-#CRM-123123123123123 .dropdown-content a:hover {
+#CRM-123123123123123 .dropdown-content label:hover {
     background-color: #ddd;
 }
 
@@ -64,4 +64,32 @@
 /* Change the background color of the dropdown button when the dropdown content is shown */
 #CRM-123123123123123 .dropdown:hover .dropbtn {
     background-color: #3e8e41;
+} 
+
+#CRM-123123123123123 .red {
+    background-color: #dc493f !important;
+}
+
+#CRM-123123123123123 .green {
+    background-color: #75c095 !important;
+}
+
+#CRM-123123123123123 .blue {
+    background-color: #44a6bb !important;
+}
+#CRM-123123123123123 .orange{
+    background-color: #f17e3a !important;
+}
+#CRM-123123123123123 .violet{
+    background-color: #bd52f7 !important;
+}
+#CRM-123123123123123 .yellow{
+    background-color: #ffe100 !important;
+    color: black;
+}
+
+#CRM-123123123123123 .unset{
+    background-color: white !important;
+    color: black;
+    border: 1px solid #a0a0a0;
 }
