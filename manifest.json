@@ -1,8 +1,8 @@
 {
-  "name": "ChatSillo 2.0",
+  "name": "Messenger Force",
   "version": "0.0.1",
   "manifest_version": 2,
-  "description": "Danielle's project",
+  "description": "Facebook Messsenger CRM",
   "icons": {
     "16": "icons/icon16.png",
     "48": "icons/icon48.png",
