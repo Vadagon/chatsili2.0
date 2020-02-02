@@ -15,11 +15,9 @@ var readyStateCheckInterval = setInterval(function() {
 
 
 
-var conversionListText = "Conversation list";
-
-var fb_ul_selector = "ul[aria-label='" + conversionListText + "']";
-var fb_ul_li_selector = "ul[aria-label='" + conversionListText + "'] li";
-var fb_list_selectors = "ul[aria-label='" + conversionListText + "'] li:not([crmattr=123123123123123])";
+var fb_ul_selector = ".uiScrollableAreaWrap.scrollable div > div > ul";
+var fb_ul_li_selector = fb_ul_selector+ " li";
+var fb_list_selectors = fb_ul_selector+ " li:not([crmattr=123123123123123])";
 
 
 var a = {
@@ -92,7 +90,7 @@ function iterationStart(){
 				  </div>
 				</div>
 			</div>
-		`).prependTo($(this).attr('CRMattr', '123123123123123').find('._1qt4._7vuo')).css('z-index', 3000-layerI).find('label').click(function(){
+		`).prependTo($(this).attr('CRMattr', '123123123123123').find('div > a > div > div:nth-child(2)')).css('z-index', 3000-layerI).find('label').click(function(){
 			$(this).parent().parent().find('button').attr('class', 'dropbtn '+$(this).attr('class')).text($(this).text())
 			a.data.users[fbUser] = $(this).attr('tagId')
 			a.data.data.users[fbUser] = {
@@ -109,6 +107,10 @@ function iterationStart(){
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 	if(request.type == 'checkExistence'){
     	sendResponse({result: true})
+    	$('#CRM-123123123123123-Glass').remove()
+    	$(`<div id="CRM-123123123123123-Glass"><span>x</span></div>`).prependTo($('html > body')).find('span').click(function(){
+    		$(this).parent().remove();
+    	})
 	}else if(request.type == 'sendMessage'){
 		console.log(request)
 		a.sendMessages(request.data)
